@@ -14,17 +14,10 @@ RUN \
         php-gd openssl openldap mod_ssl php-pear net-snmp-libs php-pdo \
         autoconf automake gcc gzip help2man libtool make net-snmp-devel \
         m4 libmysqlclient-devel libmysqlclient openssl-devel dos2unix wget \
-        sendmail mariadb-devel ca-certificates && \
+        sendmail mariadb-devel && \
 
 ## --- CLEANUP ---
     yum clean all
-
-## --- FOR NTUT Only ---
-RUN \
-    wget -qO NTUT_ROOT_CA.crt https://cnc.ntut.edu.tw/app/index.php?Action=downloadfile&file=WVhSMFlXTm9MemN6TDNCMFlWODBPVFEyT1Y4NE1qYzBOREl6WHpJeU1qSTJMbU55ZEE9PQ==&fname=1454DGB0LOCCTTZX50POKKXTTW30TWICQOJCDCMK41GD34A0YSMKA0VW34OO30USGCWW45MLVSPOPOHGYW30MKXSQORKTWNKIHMP04PKUWA4POB4WSKKUSPKYWXW45HD50POSWWTKK3030YSB0QKSWNKA1UXTSA0KPZWUSUW20HGCDA0ICSSUTZXHCLKLOIGKKJGA4LKB430A1A1 && \
-    mkdir -p /etc/pki/ca-trust/source/anchors && \
-    cp NTUT_ROOT_CA.crt /etc/pki/ca-trust/source/anchors/ && \
-    update-ca-trust extract
 
 ## --- CRON ---
 # Fix cron issues - https://github.com/CentOS/CentOS-Dockerfiles/issues/31
@@ -48,9 +41,8 @@ RUN chmod +x /restore.sh
 COPY backup.sh /backup.sh
 RUN chmod +x /backup.sh
 
-VOLUME /cacti
-
 RUN mkdir /backups
+RUN mkdir /cacti
 RUN mkdir /spine
 
 ## -- MISC SETUP --
